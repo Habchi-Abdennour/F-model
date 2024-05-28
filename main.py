@@ -5,6 +5,13 @@ from test import ProphetForecast
 app = FastAPI()
 
 
+@app.get("/habib")
+async def main():
+     dates = ['2023-01-01', '2023-02-01', '2023-03-01' ]
+        ordered = [
+        48, 0, 105]
+    
+  return {'dates':dates,'ordered':ordered}
 @app.get("/")
 async def main():
     dates = [ 
