@@ -1,8 +1,25 @@
 from fastapi import FastAPI
 import requests,uvicorn
+from fastapi.middleware.cors import CORSMiddleware
 from test import ProphetForecast
 
 app = FastAPI()
+
+# Define the origins that should be allowed to access your API
+origins = [
+    "http://localhost",
+    "http://localhost:8000",
+    # Add any other origins that need to access your API
+]
+
+# Add the CORSMiddleware to the FastAPI app
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,  # Allow specific origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all methods
+    allow_headers=["*"],  # Allow all headers
+)
 
 
 
