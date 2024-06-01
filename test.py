@@ -27,7 +27,7 @@ class ProphetForecast:
     def print_forecast(self, n):
         forecast_dict = {
             "dates": self.forecast['ds'].head(n).dt.strftime('%Y-%m-%d').tolist(),
-            "forecasted_values": self.forecast['yhat'].head(n).tolist()
+            "ordered": self.forecast['yhat'].head(n).tolist()
         }
         return forecast_dict
 
