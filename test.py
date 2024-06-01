@@ -2,9 +2,11 @@ import pandas as pd
 from prophet import Prophet
 
 class ProphetForecast:
-    def __init__(self, dates, values):
+    def __init__(self, dates, values, periods=24, freq='M'):
         self.df = pd.DataFrame({'ds': pd.to_datetime(dates), 'y': values})
         self.model = Prophet()
+        self.periods = periods
+        self.freq = freq
         
         self.fit_model()
         self.create_future_dataframe()
@@ -13,9 +15,10 @@ class ProphetForecast:
     def fit_model(self):
         self.model.fit(self.df)
     
-    def create_future_dataframe(self, periods=24, freq='M'):
-        last_date = pd.to_datetime('2023-12-31')  # Ensure it starts from a specific date
-        future_dates = pd.date_range(start=last_date, periods=periods+1, freq=freq)[1:]
+    def create_future_dataframe(self):
+        # Use the last date from the input data to start the future dates
+        last_date = self.df['ds'].max()
+        future_dates = pd.date_range(start=last_date, periods=self.periods+1, freq=self.freq)[1:]
         self.future = pd.DataFrame({'ds': future_dates})
     
     def make_predictions(self):
@@ -24,6 +27,7 @@ class ProphetForecast:
     def print_forecast(self, n):
         forecast_dict = {
             "dates": self.forecast['ds'].head(n).dt.strftime('%Y-%m-%d').tolist(),
-            "ordered": self.forecast['yhat'].head(n).tolist()
+            "forecasted_values": self.forecast['yhat'].head(n).tolist()
         }
         return forecast_dict
+
